@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>単項式コード5 - 天下統一 最終決定版</title>
+  <title>単項式コード5 - 天下統一 安定版</title>
   <style>
     :root {
       --bg: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
@@ -17,11 +17,9 @@
       --ng: #fb7185;
       --radius: 20px;
     }
-
     * { box-sizing: border-box; }
     body { margin: 0; font-family: "Hiragino Sans", "Meiryo", sans-serif; background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; width: 100vw; }
-
-    /* 分数表示用 */
+    
     .frac-container { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: 0.85em; margin: 0 6px; line-height: 1.1; }
     .frac-num { border-bottom: 2px solid var(--text); padding: 0 6px; }
     .frac-den { padding: 0 6px; }
@@ -29,35 +27,30 @@
 
     .app { height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; padding: 20px; }
     .shell { width: min(1200px, 100%); height: min(850px, 95vh); background: rgba(15, 23, 42, 0.98); border: 1px solid var(--line); border-radius: 30px; display: grid; grid-template-columns: 300px 1fr; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
-
+    
     aside { background: rgba(30, 41, 59, 0.4); padding: 30px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 20px; }
-    h1 { font-size: 24px; margin: 0; color: var(--accent); letter-spacing: 3px; text-align: center; font-weight: 900; }
+    h1 { font-size: 22px; margin: 0; color: var(--accent); letter-spacing: 2px; text-align: center; font-weight: 900; }
     .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 15px; }
-    .label { font-size: 12px; color: var(--sub); margin-bottom: 4px; font-weight: bold; }
+    .label { font-size: 11px; color: var(--sub); margin-bottom: 4px; font-weight: bold; }
     .stat-row { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 4px; font-size: 16px; }
     
     .stage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .stage-btn { position: relative; background: #334155; border: 1px solid var(--line); color: white; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-    .stage-btn.active { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); }
+    .stage-btn { position: relative; background: #334155; border: 1px solid var(--line); color: white; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; border: none;}
+    .stage-btn.active { background: var(--accent) !important; color: #000 !important; box-shadow: 0 0 15px var(--accent); }
     .stage-btn.locked { opacity: 0.15; cursor: not-allowed; }
-    .kamon { position: absolute; bottom: -5px; right: -5px; width: 20px; height: 20px; background: var(--ok); border-radius: 50%; border: 2px solid #0f172a; }
+    .kamon { position: absolute; bottom: -5px; right: -5px; width: 18px; height: 18px; background: var(--ok); border-radius: 50%; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; }
+    .kamon::after { content: ''; width: 8px; height: 4px; border-left: 2px solid #000; border-bottom: 2px solid #000; transform: rotate(-45deg); margin-top: -2px; }
 
     main { padding: 40px; display: flex; flex-direction: column; gap: 20px; position: relative; overflow-y: auto; }
     .status-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-    .chip { background: var(--panel); border: 1px solid var(--line); padding: 10px; border-radius: 12px; text-align: center; position: relative; }
+    .chip { background: var(--panel); border: 1px solid var(--line); padding: 10px; border-radius: 12px; text-align: center; }
     .chip strong { display: block; font-size: 18px; color: var(--accent-2); }
 
     .screen { display: none; flex-direction: column; gap: 20px; height: 100%; }
     .screen.active { display: flex; }
-
-    .problem-box { background: linear-gradient(135deg, #0f172a, #1e293b); flex-grow: 1; display: flex; align-items: center; justify-content: center; border-radius: 25px; border: 3px solid var(--accent-2); font-size: 60px; font-weight: bold; box-shadow: inset 0 0 50px rgba(56, 189, 248, 0.15); }
-
-    /* 先生用チラ見用 */
-    #teacherHint { 
-      position: absolute; top: 10px; right: 10px; color: rgba(255,255,255,0.2); 
-      font-size: 10px; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 5px; 
-      display: none; z-index: 10000; pointer-events: none;
-    }
+    .problem-box { background: linear-gradient(135deg, #0f172a, #1e293b); flex-grow: 1; display: flex; align-items: center; justify-content: center; border-radius: 25px; border: 3px solid var(--accent-2); font-size: 60px; font-weight: bold; box-shadow: inset 0 0 50px rgba(56, 189, 248, 0.15); min-height: 200px; }
+    
+    #teacherHint { position: absolute; top: 10px; right: 10px; color: rgba(255,255,255,0.4); font-size: 10px; background: rgba(0,0,0,0.7); padding: 5px 10px; border-radius: 5px; display: none; z-index: 10000; }
 
     .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 12px; display: flex; align-items: center; gap: 12px; min-height: 85px; }
@@ -66,7 +59,6 @@
 
     .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .num-btn { background: #334155; border: none; color: white; padding: 15px; border-radius: 10px; font-size: 24px; cursor: pointer; }
-
     .code-display { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
     .digit { width: 45px; height: 60px; background: #020617; border: 2px solid var(--accent-2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; color: var(--accent-2); }
 
@@ -78,17 +70,15 @@
     .result-card { text-align: center; padding: 40px; border-radius: 30px; border: 3px solid transparent; }
     .win { border-color: var(--ok); background: rgba(34, 197, 94, 0.08); }
     .lose { border-color: var(--ng); background: rgba(251, 113, 133, 0.08); }
-
     .shogun-title { font-size: 60px; color: var(--accent); font-weight: 900; text-shadow: 0 0 30px var(--accent); animation: shogun-glow 2.5s infinite; margin: 20px 0; letter-spacing: 10px; }
     @keyframes shogun-glow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-
     .sakura-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; display: none; }
     .sakura { position: absolute; background: #ffd700; border-radius: 50% 0 50% 50%; animation: sakura-fall linear infinite; }
     @keyframes sakura-fall { 0% { transform: translateY(-10vh) rotate(0deg); } 100% { transform: translateY(110vh) rotate(1080deg) translateX(80px); } }
-
+    
     sup { font-size: 0.5em; vertical-align: top; }
     .timer-warn { color: var(--ng); animation: pulse 0.5s infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   </style>
 </head>
 <body>
@@ -108,7 +98,7 @@
       </div>
       <div class="card">
         <div class="label">戦場選択</div>
-        <div class="stage-grid" id="stageGrid"></div>
+        <div id="stageGrid" class="stage-grid"></div>
       </div>
       <button class="btn btn-exit" onclick="exitGame()">全画面解除 / 終了</button>
     </aside>
@@ -118,48 +108,48 @@
         <div class="chip"><span class="label">刻限</span><strong id="timer">02:00</strong></div>
         <div class="chip"><span class="label">累計戦功</span><strong id="totalScore">0</strong></div>
         <div class="chip"><span class="label">連勝</span><strong id="streak">0</strong></div>
-        <div class="chip" id="rankChipParent" onmousedown="startHintTimer()" onmouseup="stopHintTimer()" ontouchstart="startHintTimer()" ontouchend="stopHintTimer()">
+        <div class="chip" id="rankChipParent">
           <span class="label">階級</span><strong id="rankChip">足軽</strong>
         </div>
         <div class="chip"><span class="label">戦場</span><strong id="stageNum">1</strong></div>
       </div>
 
       <section id="homeScreen" class="screen active">
-        <div class="card" style="padding:50px; text-align:center; border:2px dashed var(--accent); flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
-          <h2 style="font-size:42px; color:var(--accent); margin-bottom: 15px;">いざ、出陣。</h2>
-          <p style="color:var(--sub); line-height:2; font-size:17px; margin-bottom: 30px;">
+        <div class="card" style="padding:40px; text-align:center; border:2px dashed var(--accent); flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+          <h2 style="font-size:38px; color:var(--accent); margin-bottom: 10px;">いざ、出陣。</h2>
+          <p style="color:var(--sub); line-height:2; font-size:16px; margin-bottom: 25px;">
             一、制限時間は全戦場 **120秒** なり。<br>
             二、早く解けば残った時間に応じて **戦功ボーナス** 獲得。<br>
             三、計算に迷ったら **軍を引き返す（やりなおし）** も手なり。<br>
             四、全軍突破し、征夷大将軍を目指せ。
           </p>
-          <button class="btn btn-primary" style="font-size:26px; padding:20px 80px;" onclick="startStage()">門を開く</button>
+          <button class="btn btn-primary" style="font-size:24px; padding:20px 70px;" onclick="startGameSession()">門を開く</button>
         </div>
       </section>
 
       <section id="problemScreen" class="screen">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <h2 id="probMeta" style="margin:0; font-size: 24px;">第1問 / 5</h2>
+          <h2 id="probMeta" style="margin:0; font-size: 22px;">第1問 / 5</h2>
           <div id="progBar" style="display:flex; gap:10px;"></div>
         </div>
-        <div class="problem-box" id="problemDisplay"></div>
-        <button class="btn btn-primary" style="width:100%; font-size:22px;" id="nextBtn" onclick="nextProblem()">次へ進む</button>
+        <div id="problemDisplay" class="problem-box">ここに問題が出ます</div>
+        <button class="btn btn-primary" style="width:100%; font-size:22px;" onclick="nextProblem()">次へ進む</button>
       </section>
 
       <section id="answerScreen" class="screen">
-        <div style="display:grid; grid-template-columns: 1fr 340px; gap:20px; flex-grow:1;">
+        <div style="display:grid; grid-template-columns: 1fr 320px; gap:20px; flex-grow:1;">
           <div class="card" style="display:flex; flex-direction:column;">
             <div class="label" style="display:flex; justify-content:space-between; align-items:center;">
               <span>答えの札 (0-9)</span>
-              <button class="btn" style="background:#64748b; color:#fecaca; font-size:12px;" onclick="resetToProblem()">⚠ 軍を引き返す（やりなおし）</button>
+              <button class="btn" style="background:#64748b; color:#fecaca; font-size:11px; padding:5px 10px;" onclick="resetToProblem()">⚠ 軍を引き返す（やりなおし）</button>
             </div>
-            <div class="option-grid" id="optionGrid" style="margin-top:10px;"></div>
+            <div id="optionGrid" class="option-grid" style="margin-top:10px;"></div>
           </div>
           <div style="display:flex; flex-direction:column; gap:15px;">
             <div class="card" style="border-color:var(--accent-2);">
               <div class="label" style="text-align:center;">入力中の暗号</div>
-              <div class="code-display" id="codeDisplay"></div>
-              <div class="numpad" id="numpad"></div>
+              <div id="codeDisplay" class="code-display"></div>
+              <div id="numpad" class="numpad"></div>
             </div>
             <button class="btn btn-action" onclick="judge()">判定を仰ぐ</button>
             <button class="btn" style="background:#475569; color:white;" onclick="backSpace()">一文字消す</button>
@@ -185,105 +175,68 @@
 </div>
 
 <script>
-// --- 先生用隠し機能 ---
-let hintTimer;
-function startHintTimer() {
-  hintTimer = setTimeout(() => {
-    const hintEl = document.getElementById('teacherHint');
-    hintEl.innerText = "隠しモード: 正解コード [" + state.currentSet.code.join(', ') + "]";
-    hintEl.style.display = 'block';
-    setTimeout(() => { hintEl.style.display = 'none'; }, 5000);
-  }, 3000); // 3秒長押し
-}
-function stopHintTimer() { clearTimeout(hintTimer); }
-
-// --- データ保存系 ---
-const STORAGE_KEY = 'sengoku_math_v2';
-let state = {
-  stage: 1, reached: 1, streak: 0, bestStreak: 0,
-  score: 0, bestScore: 0, bestRank: "足軽",
-  qIdx: 0, timer: 120, timerId: null,
-  currentSet: { code: [] }, input: []
-};
+// --- 完全初期化ロジック ---
+const STORAGE_KEY = 'sengoku_math_vFINAL_ULTRA';
+let state = { stage: 1, reached: 1, streak: 0, bestStreak: 0, score: 0, bestScore: 0, bestRank: "足軽", qIdx: 0, timer: 120, timerId: null, currentSet: { code: [], probs: [] }, input: [] };
 
 function loadRecords() {
-  const data = localStorage.getItem(STORAGE_KEY);
-  if (data) {
-    const p = JSON.parse(data);
-    state.bestScore = p.bestScore || 0;
-    state.bestStreak = p.bestStreak || 0;
-    state.bestRank = p.bestRank || "足軽";
-    state.reached = p.reached || 1;
-    state.stage = state.reached;
-  }
+  try {
+    const d = localStorage.getItem(STORAGE_KEY);
+    if (d) {
+      const p = JSON.parse(d);
+      state.bestScore = p.bestScore || 0;
+      state.bestStreak = p.bestStreak || 0;
+      state.bestRank = p.bestRank || "足軽";
+      state.reached = p.reached || 1;
+      state.stage = state.reached;
+    }
+  } catch(e) { localStorage.removeItem(STORAGE_KEY); } // 壊れたデータは消去
 }
+
 function saveRecords() {
-  const curRank = getRank(state.streak, state.stage, state.reached);
-  const ranks = ["足軽", "足軽組頭", "侍大将", "宿老", "家老", "天下人", "征夷大将軍"];
-  if (ranks.indexOf(curRank) > ranks.indexOf(state.bestRank)) state.bestRank = curRank;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    bestScore: state.bestScore, bestStreak: state.bestStreak, 
-    bestRank: state.bestRank, reached: state.reached
-  }));
+  try {
+    const curRank = getRank(state.streak, state.stage, state.reached);
+    const ranks = ["足軽", "足軽組頭", "侍大将", "宿老", "家老", "天下人", "征夷大将軍"];
+    if (ranks.indexOf(curRank) > ranks.indexOf(state.bestRank)) state.bestRank = curRank;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ bestScore: state.bestScore, bestStreak: state.bestStreak, bestRank: state.bestRank, reached: state.reached }));
+  } catch(e){}
 }
 
-// --- 基本システム ---
-function requestFullScreen() {
-  const de = document.documentElement;
-  if (de.requestFullscreen) de.requestFullscreen();
-  else if (de.webkitRequestFullscreen) de.webkitRequestFullscreen();
-}
-function exitGame() {
-  if (confirm("全画面表示を終了し、本陣に戻りますか？")) {
-    stopSakura(); clearInterval(state.timerId);
-    if (document.fullscreenElement || document.webkitFullscreenElement) document.exitFullscreen().catch(()=>{});
-    showScreen('homeScreen'); updateUI();
-  }
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
 }
 
-const Sound = {
-  ctx: null,
-  init() { if(!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
-  play(f, type, d, v=0.1) {
-    this.init(); const t = this.ctx.currentTime;
-    const o = this.ctx.createOscillator(); const g = this.ctx.createGain();
-    o.type = type; o.frequency.setValueAtTime(f, t);
-    g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.01, t + d);
-    o.connect(g); g.connect(this.ctx.destination);
-    o.start(); o.stop(t + d);
-  },
-  tap() { this.play(880, 'sine', 0.1, 0.05); },
-  clear() { [523, 659, 783, 1046].forEach((f, i) => setTimeout(() => this.play(f, 'triangle', 0.8, 0.1), i*120)); },
-  miss() { this.play(110, 'sawtooth', 0.5, 0.2); },
-  horagai() {
-    this.init(); const t = this.ctx.currentTime;
-    [146, 220, 293].forEach(f => {
-      const o = this.ctx.createOscillator(); const g = this.ctx.createGain();
-      o.type = 'sawtooth'; o.frequency.setValueAtTime(f, t);
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.1, t+0.5); g.gain.exponentialRampToValueAtTime(0.01, t+3);
-      o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t+3);
-    });
-  }
-};
-
-function getRank(s, stage, reached) {
-  if (reached > 6) return "征夷大将軍";
-  if (stage >= 6 || s >= 15) return "天下人";
-  if (stage >= 5 || s >= 12) return "家老";
-  if (stage >= 4 || s >= 10) return "宿老";
-  if (stage >= 3 || s >= 6)  return "侍大将";
-  if (stage >= 2 || s >= 3)  return "足軽組頭";
-  return "足軽";
+// --- ゲーム開始 ---
+function startGameSession() {
+  try {
+    const de = document.documentElement;
+    if (de.requestFullscreen) de.requestFullscreen().catch(()=>{});
+  } catch(e){}
+  startStage();
 }
 
+function startStage() {
+  stopSakura();
+  clearInterval(state.timerId);
+  state.qIdx = 0;
+  state.input = [];
+  state.timer = 120;
+  
+  // 確実に問題を生成して表示
+  state.currentSet = buildSet();
+  showScreen('problemScreen');
+  renderProblem();
+  startTimer();
+  updateUI();
+  renderStages();
+}
+
+// --- 数学エンジン ---
 const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
-function normalizeFrac(n, d) {
-  const common = Math.abs(gcd(n, d));
-  let nn = n/common, dd = d/common;
-  if(dd < 0) { nn=-nn; dd=-dd; }
-  return {n:nn, d:dd};
-}
-const supChars = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','x':'ˣ','y':'ʸ','a':'ᵃ','b':'ᵇ','c':'ᶜ','-':'⁻'};
+function normalizeFrac(n, d) { const common = Math.abs(gcd(n, d)); let nn = n/common, dd = d/common; if(dd < 0) { nn=-nn; dd=-dd; } return {n:nn, d:dd}; }
+const supChars = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','x':'ˣ','y':'ʸ','a':'ᵃ','b':'ᵇ','c':'ᶜ'};
 const toSup = (n) => String(n).split('').map(c => supChars[c] || c).join('');
 
 function formatTerm(term) {
@@ -294,11 +247,8 @@ function formatTerm(term) {
   let html = `<span class="term-wrapper">`;
   if(c.n < 0) html += `<span style="margin-right:4px;">−</span>`;
   const n = Math.abs(c.n); const d = c.d;
-  if(d === 1) {
-    if(n === 1 && hasV) html += varStr; else html += n + varStr;
-  } else {
-    html += `<div class="frac-container"><div class="frac-num">${(n===1 && hasV)?varStr:n+varStr}</div><div class="frac-den">${d}</div></div>`;
-  }
+  if(d === 1) { if(n === 1 && hasV) html += varStr; else html += n + varStr; }
+  else { html += `<div class="frac-container"><div class="frac-num">${(n===1 && hasV)?varStr:n+varStr}</div><div class="frac-den">${d}</div></div>`; }
   html += `</span>`;
   return html;
 }
@@ -316,33 +266,6 @@ function div(a, b) {
   return {coeff:c, vars:v};
 }
 
-// --- ゲームロジック ---
-function startStage() {
-  requestFullScreen(); stopSakura();
-  state.qIdx = 0; state.input = [];
-  state.currentSet = buildSet();
-  state.timer = 120;
-  showScreen('problemScreen'); renderProblem();
-  startTimer(); updateUI();
-}
-
-function buildSet() {
-  const probs = []; const ansHtmls = [];
-  while(probs.length < 5) {
-    const p = generateProblem(state.stage);
-    const html = formatTerm(p.ans);
-    if(!ansHtmls.includes(html)) { probs.push(p); ansHtmls.push(html); }
-  }
-  const options = [...ansHtmls];
-  while(options.length < 10) {
-    const dummy = generateProblem(Math.floor(Math.random()*5)+1).ans;
-    const html = formatTerm(dummy);
-    if(!options.includes(html)) options.push(html);
-  }
-  const shuffled = options.sort(() => Math.random() - 0.5);
-  return { probs, options: shuffled, code: ansHtmls.map(h => shuffled.indexOf(h)) };
-}
-
 function generateProblem(s) {
   const chars = ['x', 'y', 'a', 'b', 'c'];
   const char = chars[Math.floor(Math.random()*chars.length)];
@@ -350,21 +273,39 @@ function generateProblem(s) {
   const randC = () => [-6,-4,-3,-2,-1,1,2,3,4,6,8,12][Math.floor(Math.random()*12)];
   let t1, t2, t3, ans, expr;
   switch(s) {
-    case 1: t1 = {coeff:{n:randC(),d:1}, vars:{[char]:1}}; t2 = {coeff:{n:Math.abs(randC()),d:1}, vars:{[Math.random()>0.5?char:char2]:1}}; ans = mul(t1,t2); break;
-    case 2: const base = {coeff:{n:[-3,-2,-1,2,3][Math.floor(Math.random()*5)],d:1}, vars:{[char]:1}}; const exp = Math.random()>0.5?2:3; ans = base; for(let i=1; i<exp; i++) ans = mul(ans, base); expr = `(${formatTerm(base)})${toSup(exp)}`; break;
-    case 3: t2 = {coeff:{n:Math.floor(Math.random()*3)+2,d:1}, vars:{[char]:1}}; ans = {coeff:{n:randC(),d:1}, vars:{[char]:Math.floor(Math.random()*2)+1}}; t1 = mul(t2, ans); break;
-    case 4: t1 = {coeff:normalizeFrac([1,3,1][Math.floor(Math.random()*3)],[2,4,3][Math.floor(Math.random()*3)]), vars:{[char]:1}}; t2 = {coeff:normalizeFrac([1,2,3][Math.floor(Math.random()*3)],[3,5,2][Math.floor(Math.random()*3)]), vars:{[char]:1}}; const isDiv = Math.random()>0.5; ans = isDiv?div(t1,t2):mul(t1,t2); expr = `${formatTerm(t1)} ${isDiv?'÷':'×'} ${formatTerm(t2)}`; break;
-    case 5: t1 = {coeff:{n:12,d:1}, vars:{[char]:2}}; t2 = {coeff:{n:4,d:1}, vars:{[char]:1}}; t3 = {coeff:{n:Math.floor(Math.random()*3)+2,d:1}, vars:{[char2]:1}}; const op = [['÷','×'],['×','÷'],['÷','÷']][Math.floor(Math.random()*3)]; let temp = (op[0]==='÷')?div(t1,t2):mul(t1,t2); ans = (op[1]==='÷')?div(temp,t3):mul(temp,t3); expr = `${formatTerm(t1)} ${op[0]} ${formatTerm(t2)} ${op[1]} ${formatTerm(t3)}`; break;
-    default: return generateProblem(Math.floor(Math.random()*5)+1);
+    case 1: t1={coeff:{n:randC(),d:1}, vars:{[char]:1}}; t2={coeff:{n:Math.abs(randC()),d:1}, vars:{[Math.random()>0.5?char:char2]:1}}; ans=mul(t1,t2); break;
+    case 2: const base={coeff:{n:[-3,-2,-1,2,3][Math.floor(Math.random()*5)],d:1}, vars:{[char]:1}}; const exp=Math.random()>0.5?2:3; ans=base; for(let i=1;i<exp;i++) ans=mul(ans,base); expr=`(${formatTerm(base)})${toSup(exp)}`; break;
+    case 3: t2={coeff:{n:Math.floor(Math.random()*3)+2,d:1}, vars:{[char]:1}}; ans={coeff:{n:randC(),d:1}, vars:{[char]:Math.floor(Math.random()*2)+1}}; t1=mul(t2,ans); break;
+    case 4: t1={coeff:normalizeFrac([1,3,1][Math.floor(Math.random()*3)],[2,4,3][Math.floor(Math.random()*3)]), vars:{[char]:1}}; t2={coeff:normalizeFrac([1,2,3][Math.floor(Math.random()*3)],[3,5,2][Math.floor(Math.random()*3)]), vars:{[char]:1}}; const isDiv=Math.random()>0.5; ans=isDiv?div(t1,t2):mul(t1,t2); expr=`${formatTerm(t1)} ${isDiv?'÷':'×'} ${formatTerm(t2)}`; break;
+    case 5: t1={coeff:{n:12,d:1}, vars:{[char]:2}}; t2={coeff:{n:4,d:1}, vars:{[char]:1}}; t3={coeff:{n:Math.floor(Math.random()*3)+2,d:1}, vars:{[char2]:1}}; const op=[['÷','×'],['×','÷'],['÷','÷']][Math.floor(Math.random()*3)]; let temp=(op[0]==='÷')?div(t1,t2):mul(t1,t2); ans=(op[1]==='÷')?div(temp,t3):mul(temp,t3); expr=`${formatTerm(t1)} ${op[0]} ${formatTerm(t2)} ${op[1]} ${formatTerm(t3)}`; break;
+    default: return generateProblem(1);
   }
-  expr = expr || `${formatTerm(t1)} ${s===3?'÷':'×'} ${formatTerm(t2)}`;
+  if(!expr) expr = `${formatTerm(t1)} ${s===3?'÷':'×'} ${formatTerm(t2)}`;
   return {ans, expr};
 }
 
+function buildSet() {
+  const probs = []; const ansHtmls = [];
+  for(let i=0; i<5; i++){
+    const p = generateProblem(state.stage);
+    probs.push(p); ansHtmls.push(formatTerm(p.ans));
+  }
+  const options = [...ansHtmls];
+  while(options.length < 10) {
+    const h = formatTerm(generateProblem(1).ans);
+    if(!options.includes(h)) options.push(h);
+  }
+  const shuffled = options.sort(() => Math.random() - 0.5);
+  return { probs, options: shuffled, code: ansHtmls.map(h => shuffled.indexOf(h)) };
+}
+
+// --- 描画コア ---
 function renderProblem() {
   const p = state.currentSet.probs[state.qIdx];
+  const display = document.getElementById('problemDisplay');
+  if(!p || !display) return;
   document.getElementById('probMeta').innerText = `第 ${state.qIdx + 1} 問 / 5`;
-  document.getElementById('problemDisplay').innerHTML = p.expr;
+  display.innerHTML = p.expr;
   const pb = document.getElementById('progBar'); pb.innerHTML = '';
   for(let i=0; i<5; i++) {
     const dot = document.createElement('div');
@@ -373,8 +314,6 @@ function renderProblem() {
     pb.appendChild(dot);
   }
 }
-function nextProblem() { Sound.tap(); if(state.qIdx < 4) { state.qIdx++; renderProblem(); } else { showScreen('answerScreen'); renderAnswerScreen(); } }
-function resetToProblem() { Sound.tap(); state.qIdx = 0; state.input = []; showScreen('problemScreen'); renderProblem(); }
 
 function renderAnswerScreen() {
   const grid = document.getElementById('optionGrid'); grid.innerHTML = '';
@@ -391,112 +330,69 @@ function renderAnswerScreen() {
   });
   updateCode();
 }
-function updateCode() {
-  const d = document.getElementById('codeDisplay'); d.innerHTML = '';
-  for(let i=0; i<5; i++) {
-    const div = document.createElement('div'); div.className = 'digit';
-    div.innerText = state.input[i] !== undefined ? state.input[i] : '';
-    d.appendChild(div);
-  }
-}
-function backSpace() { Sound.tap(); state.input.pop(); updateCode(); }
 
 function judge() {
   if(state.input.length < 5) return;
   clearInterval(state.timerId);
   const correct = state.input.join('') === state.currentSet.code.join('');
   showScreen('resultScreen');
-  const card = document.getElementById('resultCard');
-  const title = document.getElementById('resultTitle');
-  const bonusDisp = document.getElementById('bonusDisplay');
-  const msg = document.getElementById('resultMsg');
-  const nBtn = document.getElementById('nextStageBtn');
-  title.innerHTML = ''; bonusDisp.innerText = '';
-
   if(correct) {
-    const bonus = state.timer * 10;
-    state.score += (1000 + bonus);
+    const bonus = state.timer * 10; state.score += (1000 + bonus);
     state.bestScore = Math.max(state.bestScore, state.score);
     state.streak++; state.bestStreak = Math.max(state.bestStreak, state.streak);
     if(state.stage === state.reached && state.reached < 6) state.reached++;
-
     if(state.stage === 6) {
-      Sound.horagai(); card.className = 'result-card win';
-      title.innerHTML = '<div class="shogun-title">征夷大将軍</div>';
-      bonusDisp.innerText = `戦功ボーナス: +${bonus}！`;
-      msg.innerHTML = `累計戦功 ${state.score}。天下統一、天晴れにござります！`;
-      startSakura(); nBtn.style.display = 'none';
+      Sound.horagai(); document.getElementById('resultCard').className = 'result-card win';
+      document.getElementById('resultTitle').innerHTML = '<div class="shogun-title">征夷大将軍</div>';
+      document.getElementById('bonusDisplay').innerText = `戦功ボーナス: +${bonus}！`;
+      document.getElementById('resultMsg').innerHTML = `累計戦功 ${state.score}。天下統一なり！`;
+      startSakura(); document.getElementById('nextStageBtn').style.display = 'none';
     } else {
-      Sound.clear(); card.className = 'result-card win'; title.innerText = '見事なり！';
-      bonusDisp.innerText = `戦功ボーナス: +${bonus}！`;
-      msg.innerText = '五つの暗号をすべて解読。計算の腕前、確かなものなり。';
-      nBtn.style.display = 'block'; nBtn.innerText = `第 ${state.stage + 1} の戦場へ`;
+      Sound.clear(); document.getElementById('resultCard').className = 'result-card win';
+      document.getElementById('resultTitle').innerText = '見事なり！';
+      document.getElementById('bonusDisplay').innerText = `戦功ボーナス: +${bonus}！`;
+      document.getElementById('resultMsg').innerText = '五つの暗号をすべて解読。';
+      document.getElementById('nextStageBtn').style.display = 'block';
+      document.getElementById('nextStageBtn').innerText = `第 ${state.stage + 1} の戦場へ`;
     }
   } else {
     Sound.miss(); state.streak = 0; state.score = 0;
-    card.className = 'result-card lose'; title.innerText = '不覚…！';
-    msg.innerText = '答えが一致せぬ。ノートを読み返し、計算の乱れを正せ。';
-    nBtn.style.display = 'none';
+    document.getElementById('resultCard').className = 'result-card lose';
+    document.getElementById('resultTitle').innerText = '不覚…！';
+    document.getElementById('resultMsg').innerText = '計算の乱れを正せ。';
+    document.getElementById('nextStageBtn').style.display = 'none';
   }
   document.getElementById('correctCodeDisplay').innerText = state.currentSet.code.join(' ');
   saveRecords(); updateUI(); renderStages();
 }
 
-function startTimer() {
-  clearInterval(state.timerId);
-  state.timerId = setInterval(() => {
-    state.timer--;
-    const m = String(Math.floor(state.timer/60)).padStart(2,'0');
-    const s = String(state.timer%60).padStart(2,'0');
-    const el = document.getElementById('timer'); el.innerText = `${m}:${s}`;
-    if(state.timer <= 15) el.className = 'timer-warn'; else el.className = '';
-    if(state.timer <= 0) { clearInterval(state.timerId); judge(); }
-  }, 1000);
-}
-
-function updateUI() {
-  document.getElementById('streak').innerText = state.streak;
-  document.getElementById('bestStreak').innerText = state.bestStreak;
-  document.getElementById('totalScore').innerText = state.score;
-  document.getElementById('bestScore').innerText = state.bestScore;
-  document.getElementById('bestRank').innerText = state.bestRank;
-  const r = getRank(state.streak, state.stage, state.reached);
-  document.getElementById('rankChip').innerText = r;
-  document.getElementById('rankName').innerText = state.bestRank;
-  document.getElementById('stageNum').innerText = state.stage;
-}
-
-function renderStages() {
-  const g = document.getElementById('stageGrid'); g.innerHTML = '';
-  for(let i=1; i<=6; i++) {
-    const b = document.createElement('button'); b.className = 'stage-btn'; b.innerText = i;
-    if(i > state.reached) { b.classList.add('locked'); b.disabled = true; }
-    else {
-      if(i === state.stage) b.classList.add('active');
-      if(i < state.reached) { const k = document.createElement('div'); k.className = 'kamon'; b.appendChild(k); }
-      b.onclick = () => { Sound.tap(); state.stage = i; updateUI(); renderStages(); };
-    }
-    g.appendChild(b);
-  }
-}
-
+// --- その他システム ---
+const Sound = { ctx: null, init() { if(!this.ctx) { try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} } }, play(f, type, d, v=0.1) { try { this.init(); const t = this.ctx.currentTime; const o = this.ctx.createOscillator(); const g = this.ctx.createGain(); o.type = type; o.frequency.setValueAtTime(f, t); g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.01, t + d); o.connect(g); g.connect(this.ctx.destination); o.start(); o.stop(t + d); } catch(e){} }, tap() { this.play(880, 'sine', 0.1, 0.05); }, clear() { [523, 659, 783, 1046].forEach((f, i) => setTimeout(() => this.play(f, 'triangle', 0.8, 0.1), i*120)); }, miss() { this.play(110, 'sawtooth', 0.5, 0.2); }, horagai() { try { this.init(); const t = this.ctx.currentTime; [146, 220, 293].forEach(f => { const o = this.ctx.createOscillator(); const g = this.ctx.createGain(); o.type = 'sawtooth'; o.frequency.setValueAtTime(f, t); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.1, t+0.5); g.gain.exponentialRampToValueAtTime(0.01, t+3); o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t+3); }); } catch(e){} } };
+function startTimer() { clearInterval(state.timerId); state.timerId = setInterval(() => { state.timer--; const m = String(Math.floor(state.timer/60)).padStart(2,'0'); const s = String(state.timer%60).padStart(2,'0'); document.getElementById('timer').innerText = `${m}:${s}`; if(state.timer <= 15) document.getElementById('timer').className = 'timer-warn'; else document.getElementById('timer').className = ''; if(state.timer <= 0) { clearInterval(state.timerId); judge(); } }, 1000); }
+function updateUI() { document.getElementById('streak').innerText = state.streak; document.getElementById('bestStreak').innerText = state.bestStreak; document.getElementById('totalScore').innerText = state.score; document.getElementById('bestScore').innerText = state.bestScore; document.getElementById('bestRank').innerText = state.bestRank; const r = getRank(state.streak, state.stage, state.reached); document.getElementById('rankChip').innerText = r; document.getElementById('stageNum').innerText = state.stage; }
+function renderStages() { const g = document.getElementById('stageGrid'); if(!g) return; g.innerHTML = ''; for(let i=1; i<=6; i++) { const b = document.createElement('button'); b.className = 'stage-btn'; b.innerText = i; if(i > state.reached) { b.classList.add('locked'); b.disabled = true; } else { if(i === state.stage) b.classList.add('active'); if(i < state.reached) { const k = document.createElement('div'); k.className = 'kamon'; b.appendChild(k); } b.onclick = () => { Sound.tap(); state.stage = i; updateUI(); renderStages(); }; } g.appendChild(b); } }
+function getRank(s, stage, reached) { if (reached > 6) return "征夷大将軍"; if (stage >= 6 || s >= 15) return "天下人"; if (stage >= 5 || s >= 12) return "家老"; if (stage >= 4 || s >= 10) return "宿老"; if (stage >= 3 || s >= 6) return "侍大将"; if (stage >= 2 || s >= 3) return "足軽組頭"; return "足軽"; }
+function nextProblem() { Sound.tap(); if(state.qIdx < 4) { state.qIdx++; renderProblem(); } else { showScreen('answerScreen'); renderAnswerScreen(); } }
+function updateCode() { const d = document.getElementById('codeDisplay'); d.innerHTML = ''; for(let i=0; i<5; i++) { const div = document.createElement('div'); div.className = 'digit'; div.innerText = state.input[i] !== undefined ? state.input[i] : ''; d.appendChild(div); } }
+function backSpace() { Sound.tap(); state.input.pop(); updateCode(); }
 function nextStage() { if(state.stage < 6) { state.stage++; startStage(); } }
-function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-function goHome() { 
-  stopSakura(); showScreen('homeScreen'); clearInterval(state.timerId);
-  if (document.fullscreenElement || document.webkitFullscreenElement) document.exitFullscreen().catch(()=>{});
-}
-function startSakura() {
-  const c = document.getElementById('sakuraContainer'); c.innerHTML = ''; c.style.display = 'block';
-  for(let i=0; i<80; i++) {
-    const s = document.createElement('div'); s.className = 'sakura';
-    s.style.left = Math.random() * 100 + 'vw'; s.style.width = s.style.height = (Math.random()*12+6)+'px';
-    s.style.animationDuration = (Math.random()*4+2)+'s'; s.style.animationDelay = (Math.random()*3)+'s';
-    c.appendChild(s);
-  }
-}
+function resetToProblem() { Sound.tap(); state.qIdx = 0; state.input = []; showScreen('problemScreen'); renderProblem(); }
+function goHome() { stopSakura(); showScreen('homeScreen'); clearInterval(state.timerId); if (document.fullscreenElement) document.exitFullscreen().catch(()=>{}); updateUI(); renderStages(); }
+function startSakura() { const c = document.getElementById('sakuraContainer'); c.innerHTML = ''; c.style.display = 'block'; for(let i=0; i<80; i++) { const s = document.createElement('div'); s.className = 'sakura'; s.style.left = Math.random() * 100 + 'vw'; s.style.width = s.style.height = (Math.random()*12+6)+'px'; s.style.animationDuration = (Math.random()*4+2)+'s'; s.style.animationDelay = (Math.random()*3)+'s'; c.appendChild(s); } }
 function stopSakura() { document.getElementById('sakuraContainer').style.display = 'none'; }
-window.onload = () => { loadRecords(); renderStages(); updateUI(); };
+function exitGame() { if (confirm("終了しますか？")) { goHome(); } }
+
+// 先生用隠し機能（階級を長押し）
+let hT;
+document.getElementById('rankChipParent').addEventListener('mousedown', () => { hT = setTimeout(() => { alert("正解暗号: " + state.currentSet.code.join(' ')); }, 3000); });
+document.getElementById('rankChipParent').addEventListener('mouseup', () => { clearTimeout(hT); });
+
+// 起動
+window.onload = () => { 
+  loadRecords(); 
+  renderStages(); 
+  updateUI(); 
+};
 </script>
 </body>
 </html>
